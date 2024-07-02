@@ -30,7 +30,7 @@
         <div class="surah_list hidden">
 
             {% for i in range(1,115) %}
-            <input class="{{'memorized' if backend.view_surah_memorized(i) else 'unmemorized'}}" type="submit" name="select_{{i}}" value="{{backend.view_ayah(i,[1])['surah_name_roman'].item()}} - {{i}}}}">
+            <input class="{{'memorized' if backend.view_surah_memorized(i) else 'unmemorized'}}" type="submit" name="select_{{i}}" value="{{backend.view_ayah(i,[1])['surah_name_roman'].item()}} - {{i}}">
             {% endfor %}
         </div>
 
