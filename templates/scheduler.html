@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- JINJA - ALL WITHIN DOUBLE CURLY GET EVALUATED AS PY CODE-->
+<!--MULTI LINE JINJA - MULTI LINE PY IN HTML HERE -&#45;&#45; MAINLY FOR LOOPS IFS-->
+<h1>Southlake Availability Scheduler</h1>
+<br>
+<form method="POST">
+    {% for i in range(1,13): %}
+        <input class="" type="submit" name="month_{{i}}" value="Month {{i}}">
+    {% endfor %}
+</form>
+<p style="white-space: pre-line;">{{output[1]}}</p>
+
+
+
+
+</body>
+</html>
