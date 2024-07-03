@@ -10,11 +10,9 @@ scope = "user-library-read playlist-modify-public"
 
 
 def create_auth_manager(scope):
-    # keep in here - private - but setting env variables not working rn
+    # keep in here - private - but setting env variables not working rn - deleted reference to secrets to keep my acct safe
     #username = "ahmediy1" for other auth type
-    # os.environ["SPOTIPY_CLIENT_ID"] = "8e528596b3544289a0fa4648fff13438"
-    # os.environ["SPOTIPY_CLIENT_SECRET"] = "7d6c1bdddc2942f092a9337bcbe4593e"
-    # os.environ["SPOTIPY_REDIRECT_URI"] = "http://localhost:8888/callback/"
+
     client_id = os.environ("SPOTIPY_CLIENT_ID")
     client_secret = os.getenv("SPOTIPY_CLIENT_SECRET")
     redirect_uri = os.getenv("SPOTIPY_REDIRECT_URI")
