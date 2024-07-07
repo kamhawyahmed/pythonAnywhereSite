@@ -16,6 +16,8 @@ backend = QuranDataManager.DataManager()
 surah_shown_index = 1
 memorized_surahs = []
 app_on = True
+surah_list = backend.make_mock_surah_list()
+
 ##
 
 
@@ -90,7 +92,7 @@ def toggle_memorized_ayah():
     return
 
 def update_memorization():
-    return render_template("memorization.html", memorized_surahs = memorized_surahs, backend = backend, app_on = app_on, surah_shown_index = surah_shown_index)
+    return render_template("memorization.html", memorized_surahs = memorized_surahs, backend = backend, app_on = app_on, surah_shown_index = surah_shown_index, surah_list = surah_list)
 
 
 if __name__ == "__main__":
