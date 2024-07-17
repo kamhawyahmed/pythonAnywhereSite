@@ -59,6 +59,29 @@ class DataManager():
         # change ayah memorized to true
         self.data.to_csv("quran_data.csv", index=False)
         return "Data saved."
+    def show_memorized_surah(self):
+        print("hi")
+        global memorized_surahs
+        memorized_surahs = []
+        for surah_name in self.return_memorized_ayat()["surah_name_roman"]:
+            memorized_surahs.append(surah_name)
+        memorized_surahs = list(set(memorized_surahs))
+        return memorized_surahs
+
+    def toggle_memorized_surah(self, key):
+        surah_toggle_num = [int(s) for s in key.split("_") if s.isdigit()][0]
+        ayat_to_toggle = list(range(1, self.return_length_of_surah(surah_toggle_num) + 1))
+        self.mark_ayah(surah_toggle_num, ayat_to_toggle)
+        return f"Surah {surah_toggle_num} Toggled!"
+
+    def select_surah(self, key):
+        surah_shown_index = [int(s) for s in key.split("_") if s.isdigit()][0]
+        return surah_shown_index
+
+    def toggle_memorized_ayah(self, key):
+        surah_toggle_num, ayah_toggle_num = [int(s) for s in key.split("_") if s.isdigit()][0:2]
+        self.mark_ayah(surah_toggle_num, [ayah_toggle_num])
+        return
 
 if __name__ == "__main__": #checks if this is imported module
     app = DataManager()
