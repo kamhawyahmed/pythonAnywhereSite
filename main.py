@@ -16,7 +16,7 @@ app = Flask(__name__)
 backend = qurandatamanager.DataManager()
 surah_shown_index = 1
 memorized_surahs = []
-app_on = False
+app_on = True
 surah_list = backend.make_mock_surah_list()
 
 ##
