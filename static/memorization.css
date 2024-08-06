@@ -142,12 +142,9 @@ input:active {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-auto-rows: minmax(35px, auto);
-
-
-
   grid-column-gap: 3px;
   grid-row-gap: 9px;
-
+  justify-content: center;
 
 }
 .juz_surahs {
@@ -160,10 +157,10 @@ input:active {
   margin: 10px; */
   }
  .juz_29 {
-   grid-column: 4 / 6
+   grid-column: span 2;
  }
  .juz_30 {
-  grid-column: 1 / 6
+  grid-column: span 6;
  }
 
 .surah_list_surah {
