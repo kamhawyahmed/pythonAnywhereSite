@@ -34,12 +34,9 @@ h1, h2 {
 
 }
 
-
-
-
 .item_div {
  color: var(--text-color);
- border: 2px solid;
+ border: 1px solid;
  border-color: rgba(70, 75, 80, 1) !important;
  border-radius: 10px;
  padding: 10px;
@@ -50,18 +47,19 @@ h1, h2 {
 }
   .item_div:hover {
     border-bottom-color: transparent;
-    color: rgba(81,164,171,1);
     border-color: rgba(81,164,171,1) !important;
 
   }
+  
+.memorized {
+  border-color: rgba(82, 169, 96, 1) !important;
+}
 
 .name, .number {
   color: var(--text-color) !important;
 }
 
-.memorized {
-  border-color: rgba(82, 169, 96, 1) !important;
-}
+
 
 footer {
   color: var(--text-color);
