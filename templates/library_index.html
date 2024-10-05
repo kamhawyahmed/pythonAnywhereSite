@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Library</title>
+  </head>
+  <body>
+    <h1>My Library</h1>
+    {% if not book_list %}
+    <p>No books in library.</p>
+    {% else %}
+    <ul>
+      {% for book in book_list %}
+      <li> <a href="{{ url_for('delete', id=book.id)}}">Delete</a> Book Name: {{book.title}} - Author: {{book.author}} - Rating: {{book.rating}}/10 <a href="{{ url_for('update', id=book.id)}}">Change Rating</a> </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <a href="{{url_for('add')}}">Add New Books<hr></a>
+    <form action="{{ url_for('home') }}" method="POST">
+    <label>Book to Find:</label>
+    <input name="title" type="text" />
+    <button type="submit">Find Book</button>
+    </form>
+    {% if book_to_find %}
+    <p>Book Name: {{book_to_find.title}} <br> Author: {{book_to_find.author}}<br>Rating: {{book_to_find.rating}}/10</p>
+    {% endif %}
+  </body>
+</html>

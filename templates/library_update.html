@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Update Books</title>
+  </head>
+  <body>
+    <h4>Book Name: {{book.title}} - Current Rating: {{book.rating}}</h4>
+    <form action="{{ url_for('update', id=book.id) }}" method="POST">
+      <input name="rating" type="text"/>
+      <button type="submit">Update Rating</button>
+    </form>
+    <br>
+  <a href="{{url_for('home')}}">Return to Library</a>
+  </body>
+</html>
