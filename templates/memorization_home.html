@@ -3,38 +3,39 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>QMTracker</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='core_styles.css')}}">
+    <title>Qur'an Memorization Tracker</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='memorization_home.css')}}">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{url_for('static', filename='memorization.js')}}"></script>
 </head>
 <body>
 
     <div class="header">
-        <h1 class="cs-title" >Qur'an Memorization Tracker</h1>
+        <h1>Qur'an Memorization Tracker</h1>
     </div>
-    <h2>Surah</h2>
     <div class="list">
         {% for i in range(1,30 + 1) %}
             <!-- <div class="juz {{i}}" style="background-color: #EBEBEB"> -->
                 <!-- <p>Juz' {{i}}</p> -->
                 {% for surah in surahs %}
                     {% if surah.juz_no == i %}
-                        <div class="item_div">
                             <a 
                             href="{{ url_for('memorization_surah', surah_no = surah.surah_no)}}"
-                            class="{{'memorized' if surah.surah_memorized == 1 else 'unmemorized'}} item cs-text" 
+                            class=" item" 
                             name="select_{{surah['surah_no']}}">
-                            {{surah.surah_no}} | {{surah.surah_name_roman}}
+                                <div class="{{'memorized' if surah.surah_memorized == 1}} item_div"> 
+                                    <div class="number">{{surah.surah_no}}</div>
+                                    <div class="name">{{surah.surah_name_roman}}</div>
+                                </div>
+
                             </a>
-                        </div>
                     {% endif %}
                 {% endfor %} 
-            </div>
         {% endfor %}
     </div>
+    <footer>
+        <p>Developed by Ahmed Kamhawy</p>
+    </footer>
 </body>
 </html>
