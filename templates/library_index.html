@@ -11,13 +11,13 @@
     {% else %}
     <ul>
       {% for book in book_list %}
-      <li> <a href="{{ url_for('delete', id=book.id)}}">Delete</a> Book Name: {{book.title}} - Author: {{book.author}} - Rating: {{book.rating}}/10 <a href="{{ url_for('update', id=book.id)}}">Change Rating</a> </li>
+      <li> <a href="{{ url_for('library_delete', id=book.id)}}">Delete</a> Book Name: {{book.title}} - Author: {{book.author}} - Rating: {{book.rating}}/10 <a href="{{ url_for('library_update', id=book.id)}}">Change Rating</a> </li>
       {% endfor %}
     </ul>
     {% endif %}
 
-    <a href="{{url_for('add')}}">Add New Books<hr></a>
-    <form action="{{ url_for('home') }}" method="POST">
+    <a href="{{url_for('library_add')}}">Add New Books<hr></a>
+    <form action="{{ url_for('library_home') }}" method="POST">
     <label>Book to Find:</label>
     <input name="title" type="text" />
     <button type="submit">Find Book</button>
