@@ -5,17 +5,20 @@
 # error codes ignore
 
 # TODO list
-# TODO MAKE PRETTY HOME PAGE
-# TODO MAKE PRETTY SURAH PAGE
-# TODO MERGE THSI WITH REST OF PYANYWHERE SITE
-# Add class for table even though never adding new records but to refer to them -
-#   maybe dont have to define all col's and maybe will crash if applying - found it DONE
+# TODO check for better font
+# TODO separate out surah name surah page like surah list
+# TODO add deeper shade button click colour
+# Make pretty home done
+# Make pretty surah page done
+# Reintegrate with pythonanywhere site done
+# Add class for table even though never adding new records but to refer to them - DONE
+#   maybe dont have to define all col's and maybe will crash if applying - found it 
 # Convert from 1 page site to multi page - DONE
 #   Home page with surah list DONE
 #   subpages for surahs DONE
 # - 1 button to view all memorized surah (get) DONE
 # - 1 BUTTON TO SHOW BUTTONS DONE
-# - 114 buttons for 114 chapters, click button - mark memorize DONE and change colour (put)
+# - 114 buttons for 114 chapters, click button - mark memorize DONE and change colour (put) DONE
 #    #html loop for 114 buttons DONE
 #    #integrate data from main.py DONE
 

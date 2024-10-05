@@ -5,8 +5,21 @@
     <meta charset="UTF-8">
     <title>Qur'an Memorization Tracker</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}">
+    <!-- <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" 
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+    crossorigin="anonymous"
+    > -->
+    <link rel="stylesheet" href="{{url_for('static', filename='memorization.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='memorization_home.css')}}">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <script 
+    src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+    crossorigin="anonymous">
+    </script>
+    
     <script type="text/javascript" src="{{url_for('static', filename='memorization.js')}}"></script>
 </head>
 <body>
@@ -14,7 +27,7 @@
     <div class="header">
         <h1>Qur'an Memorization Tracker</h1>
     </div>
-    <div class="list">
+    <div class="list container">
         {% for i in range(1,30 + 1) %}
             <!-- <div class="juz {{i}}" style="background-color: #EBEBEB"> -->
                 <!-- <p>Juz' {{i}}</p> -->
@@ -23,7 +36,7 @@
                             <a 
                             href="{{ url_for('memorization_surah', surah_no = surah.surah_no)}}"
                             class=" item" 
-                            name="select_{{surah['surah_no']}}">
+                            name="select_{{surah.surah_no}}">
                                 <div class="{{'memorized' if surah.surah_memorized == 1}} item_div"> 
                                     <div class="number">{{surah.surah_no}}</div>
                                     <div class="name">{{surah.surah_name_roman}}</div>

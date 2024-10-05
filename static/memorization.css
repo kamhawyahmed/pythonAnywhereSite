@@ -1,150 +1,29 @@
 /* CSS */
 :root {
   --ayah-num-size: 40px;
+  --spacing-small: 0.8125rem;
+  --text-color: rgb(217,222,223);
+
 }
 
-div {
- text-align: center;
+body{
+  background-color: rgba(33,36,41,1);
+  font-family: system-ui,Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 
-input {
-  appearance: none;
-  background-color: #2ea44f;
-  border: 1px solid rgba(27, 31, 35, .15);
-  border-radius: 6px;
-  box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  padding: 6px 6px;
-  position: relative;
+footer {
+  color: var(--text-color);
+  font-size: small;
   text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: middle;
-  white-space: nowrap;
 }
 
-
-
-input:focus:not(:focus-visible):not(.focus-visible) {
-  box-shadow: none;
-  outline: none;
+.header {
+  margin: 30px 0;
+  text-align: center;
 }
 
-input:hover {
-  background-color: #2c974b;
+h1, h2 {
+  color: var(--text-color);
 }
 
-input:focus {
-  box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
-  outline: none;
-}
-
-input:disabled {
-  background-color: #94d3a2;
-  border-color: rgba(27, 31, 35, .1);
-  color: rgba(255, 255, 255, .8);
-  cursor: default;
-}
-
-input:active {
-  background-color: #298e46;
-  box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
-}
-
-.surah_list_surah {
- height: 35px;
- color: var(--bodyTextColorWhite)
-}
-
-.ayah {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  grid-auto-rows: minmax(35px, auto);
-  padding: 0 200px;
-}
-.ayah_num_div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-}
-
-.ayah_num {
-  width: var(--ayah-num-size);
-  height: var(--ayah-num-size);
-
-}
-
-.ayah_text_div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.ayah_text {
-  font-size: 30px;
-  }
-
-.memorized {
-  background-color: #d4af37;
-}
-
-.unmemorized {
-  background-color: #2ea44f;
-}
-
-.memorized_header {
-  background-color: #7AD66D;
-  margin: 10px 10px;
-  padding: 10px;
-  border: 3px solid #f0f0f0;
-  }
-
-.surah_name {
-  margin: 10px 10px;
-  padding: 10px;
-  border: 3px solid #f0f0f0;
-  }
-
-.surah {
-  padding: 16px 22px;
-  font-size: 24px;
-}
-
-.surah_div {
-  margin: 10px;
-  border: 3px solid #f0f0f0;
-  background-color: #f0f0f0;
-  }
-
-.surah_list {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 3px;
-  grid-auto-rows: minmax(35px, auto);
-}
-
-.juz {
-  display: flex;
-  flex-direction: column;
-/*  grid-template-columns: minmax(35px, auto);
-  gap: 3px;
-  grid-auto-rows: repeat(30, 1fr);
-  margin: 10px; */
-  }
-
-
-.hidden {
-  display: none;
-  }
