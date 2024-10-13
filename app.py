@@ -48,6 +48,8 @@ app.config["SQLALCHEMY_BINDS"] = {
 db = SQLAlchemy(model_class=Base)
 migrate = Migrate(app, db)
 db.init_app(app)
+migrate.init_app(app, db)
+
 
 
 # with app.app_context(): #open the app
@@ -99,7 +101,7 @@ class Ayah(db.Model):
 class MemorizationUserAyah(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
     name: Mapped[str] = mapped_column(String)
-    ayah_no_quran: Mapped[int] = mapped_column(ForeignKey("ayah.ayah_no_quran"))
+    ayah_no_quran: Mapped[int] = mapped_column(Integer)
     ayah_memorized: Mapped[int] = mapped_column(Integer)
     def __repr__(self):
         return f'<User {self.id}: {self.name}'
