@@ -1,2 +1,4 @@
 .venv
 __pycache__
+instance/quran_data.db
+instance/new-books-collection.db

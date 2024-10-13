@@ -172,8 +172,6 @@ def library_delete(id):
     return redirect(url_for('library_home'))
 
 
-
-
 @app.route('/memorization/', methods=['GET'])
 def memorization_home():
     result = db.session.execute(db.select(Surah))
