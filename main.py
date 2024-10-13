@@ -93,6 +93,13 @@ class Ayah(db.Model):
     def __repr__(self):
         return f'<Ayah {self.surah_no}:{self.ayah_no_surah}>'
 
+class MemorizationUser(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
+    name: Mapped[str] = mapped_column(String)
+
+    def __repr__(self):
+        return f'<User {self.id}: {self.name}'
+
 with app.app_context(): #open the app on script run
     db.create_all()
 
