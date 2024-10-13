@@ -27,6 +27,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import Integer, String, Float, ForeignKey
 from typing import List
+from flask_migrate import Migrate
 
 import availability_scheduler
 
@@ -45,7 +46,9 @@ app.config["SQLALCHEMY_BINDS"] = {
 # app.config["SQLALCHEMY_ECHO"] = True
 
 db = SQLAlchemy(model_class=Base)
+migrate = Migrate(app, db)
 db.init_app(app)
+
 
 # with app.app_context(): #open the app
 #     db.reflect()
@@ -88,25 +91,27 @@ class Ayah(db.Model):
     ayah_memorized: Mapped[int] = mapped_column(Integer)
     surah: Mapped["Surah"] = relationship(back_populates="ayat")
     ayah_ar: Mapped[str] = mapped_column(String)
-
+    ayah_no_quran: Mapped[int] = mapped_column(Integer, unique=True)
     # Optional: this will allow each book object to be identified by its title when printed.
     def __repr__(self):
         return f'<Ayah {self.surah_no}:{self.ayah_no_surah}>'
 
-class MemorizationUser(db.Model):
+class MemorizationUserAyah(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
     name: Mapped[str] = mapped_column(String)
-
+    ayah_no_quran: Mapped[int] = mapped_column(ForeignKey("ayah.ayah_no_quran"))
+    ayah_memorized: Mapped[int] = mapped_column(Integer)
     def __repr__(self):
         return f'<User {self.id}: {self.name}'
 
 with app.app_context(): #open the app on script run
     db.create_all()
 
+
+#misc
 @app.route('/', methods=['GET', 'POST'])
 def hello_world():
-    message = "Hello world"
-    return render_template("index.html", msg = message)
+    return render_template("index.html")
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
@@ -130,6 +135,7 @@ def scheduler():
 
 
 
+#Library
 @app.route('/library', methods=["GET","POST"])
 def library_home():
     #all books
@@ -172,6 +178,7 @@ def library_delete(id):
     return redirect(url_for('library_home'))
 
 
+#Quran Memorization
 @app.route('/memorization/', methods=['GET'])
 def memorization_home():
     result = db.session.execute(db.select(Surah))

@@ -8,6 +8,9 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='memorization.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='memorization_surah.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='font-awesome/css/fontawesome.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='font-awesome/css/brands.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='font-awesome/css/solid.css')}}">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{url_for('static', filename='memorization.js')}}"></script>
 </head>
@@ -15,7 +18,7 @@
     <div class="home_wrapper">
         <a href="{{url_for('memorization_home')}}">
             <div class="home">
-            Home
+            <i class="fa-solid fa-house"></i> <span>Home</span>
             </div>
         </a>
     </div>

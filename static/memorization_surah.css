@@ -15,16 +15,29 @@
 }
 
 .home_wrapper {
-  text-align: end;  
+  text-align: center;  
+
 }
+
+
+
 
 .home {
   display: inline-block;
-  margin: 20px 20px 0 0; 
+  margin: 20px; 
  }
    .home:hover {
      border-color: rgba(81,164,171,1) !important; 
    }
+
+@media screen and (min-width: 576px) {
+.home {
+  margin: 10px 20px 0 0; 
+}
+.home_wrapper {
+  text-align: end;  
+}
+}
 
 a {
   text-decoration: none;
