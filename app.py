@@ -29,7 +29,10 @@ from sqlalchemy import Integer, String, Float, ForeignKey, MetaData
 from typing import List
 from flask_migrate import Migrate
 
+import datetime as dt
 import availability_scheduler
+
+print(dt.datetime.now().strftime('%B %d, %Y'))
 
 
 
@@ -104,6 +107,7 @@ class Ayah(db.Model):
     surah: Mapped["Surah"] = relationship(back_populates="ayat")
     ayah_ar: Mapped[str] = mapped_column(String)
     ayah_no_quran: Mapped[int] = mapped_column(Integer, unique=True)
+    timestamp_memorized: Mapped[int] = mapped_column(Integer)
     # Optional: this will allow each book object to be identified by its title when printed.
     def __repr__(self):
         return f'<Ayah {self.surah_no}:{self.ayah_no_surah}>'
@@ -113,6 +117,7 @@ class MemorizationUserAyah(db.Model):
     name: Mapped[str] = mapped_column(String)
     ayah_no_quran: Mapped[int] = mapped_column(ForeignKey("ayah.ayah_no_quran"))
     ayah_memorized: Mapped[int] = mapped_column(Integer)
+    timestamp_memorized: Mapped[int] = mapped_column(Integer)
     def __repr__(self):
         return f'<User {self.id}: {self.name}'
 
@@ -201,21 +206,36 @@ def memorization_home():
 def memorization_surah(surah_no):
     result = db.session.execute(db.select(Surah).where(Surah.surah_no == surah_no))
     surah_selected = result.scalar()
+
+    now = dt.datetime.now()
     if request.method == 'POST':
         key = list(request.form.keys())[0]
         if "surah" in key:
             surah_selected.surah_memorized = 1 - surah_selected.surah_memorized
             ayat_selected = surah_selected.ayat
-            for ayah in ayat_selected:
-                ayah.ayah_memorized = surah_selected.surah_memorized
+            for ayah_selected in ayat_selected:
+                ayah_selected.ayah_memorized = surah_selected.surah_memorized
+                ayah_selected.timestamp_memorized = int(now.timestamp())
             db.session.commit()
         elif "ayah" in key:
             ayah_no = [int(s) for s in key.split("_") if s.isdigit()][0]
             ayah_selected = surah_selected.ayat[ayah_no - 1]
             ayah_selected.ayah_memorized = 1 - ayah_selected.ayah_memorized
+            ayah_selected.timestamp_memorized = int(now.timestamp())
             surah_selected.surah_memorized = calculate_surah_memorized(surah_selected)
             db.session.commit()
-    return render_template("memorization_surah.html", surah_selected = surah_selected)
+
+    # first_ayah_timestamp = surah_selected.ayat[0].timestamp_memorized or 0
+    # datetime_last_updated = dt.datetime.fromtimestamp(first_ayah_timestamp).strftime('%B %d, %Y %I:%M %p')
+
+    surah_timestamp = 0
+    for ayah_selected in surah_selected.ayat:
+        ayah_timestamp = ayah_selected.timestamp_memorized or 0
+        surah_timestamp = max(ayah_timestamp, surah_timestamp)
+    datetime_last_updated = dt.datetime.fromtimestamp(surah_timestamp).strftime('%B %d, %Y %I:%M %p')
+    return render_template("memorization_surah.html",
+                           surah_selected = surah_selected, 
+                           datetime_last_updated = datetime_last_updated)
 
 
 def calculate_surah_memorized(surah):

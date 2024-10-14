@@ -38,6 +38,7 @@
                        type="submit"
                        name="toggle_surah_{{surah_selected.surah_no}}"
                        value="{{surah_selected.surah_name_roman}} - {{surah_selected.surah_no}}">
+                <p>Last updated: {{datetime_last_updated}}</p>
             </div>
             {% for j in range(0,surah_selected.total_ayah_surah) %}
             <div class="ayah">
