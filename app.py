@@ -1,7 +1,6 @@
 #PYTHONANYWHERE SETUP INSTRUCTIONS -
-# del folder
-# git clone github
-# pip3.10 install --user -r requirements.txt
+# git pull
+# pip3.10 install --user -r requirements.txt or added modules
 # error codes ignore
 
 # TODO list
