@@ -24,8 +24,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Integer, String, Float, ForeignKey, MetaData
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-# from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from typing import List
 from flask_migrate import Migrate
 
