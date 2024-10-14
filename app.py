@@ -25,18 +25,29 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import Integer, String, Float, ForeignKey
+from sqlalchemy import Integer, String, Float, ForeignKey, MetaData
 from typing import List
 from flask_migrate import Migrate
 
 import availability_scheduler
 
+
+
+#Needed for flask migrate - not sure why but alas
+naming_convention = {
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(column_0_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+}
 #
 
 
 app = Flask(__name__)
 
 class Base(DeclarativeBase):
+    metadata = MetaData(naming_convention=naming_convention)
     pass
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///quran_data.db" #default bind
@@ -44,9 +55,8 @@ app.config["SQLALCHEMY_BINDS"] = {
     "library": "sqlite:///new-books-collection.db"
 }
 # app.config["SQLALCHEMY_ECHO"] = True
-
-db = SQLAlchemy(model_class=Base)
-migrate = Migrate(app, db)
+db = SQLAlchemy(model_class=Base) #naming convention for flask-migrate
+migrate = Migrate(app, db,render_as_batch=True)
 db.init_app(app)
 migrate.init_app(app, db)
 
@@ -73,7 +83,7 @@ class Surah(db.Model):
     surah_no: Mapped[int] = mapped_column(Integer, unique=True)
     total_ayah_surah: Mapped[int] = mapped_column(Integer)
     juz_no: Mapped[int] = mapped_column(Integer)
-    surah_name_roman: Mapped[str] = mapped_column(String)
+    surah_name_roman: Mapped[str] = mapped_column(String, nullable=False)
     surah_name_en: Mapped[str] = mapped_column(String)
     surah_name_ar: Mapped[str] = mapped_column(String)
     place_of_revelation: Mapped[str] = mapped_column(String)
@@ -101,7 +111,7 @@ class Ayah(db.Model):
 class MemorizationUserAyah(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
     name: Mapped[str] = mapped_column(String)
-    ayah_no_quran: Mapped[int] = mapped_column(Integer)
+    ayah_no_quran: Mapped[int] = mapped_column(ForeignKey("ayah.ayah_no_quran"))
     ayah_memorized: Mapped[int] = mapped_column(Integer)
     def __repr__(self):
         return f'<User {self.id}: {self.name}'
