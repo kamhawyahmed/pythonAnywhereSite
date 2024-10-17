@@ -25,9 +25,12 @@
 
     <div class="header">
         <img src="{{url_for('static',filename='vibecheck_tagline.png')}}" alt="VibeCheck Logo">
-        <h1></h1>
-        <h2>Text "patient" or "provider" to <a href="sms:+1-866-739-8034">+1 (866) 739-8034</a> now to get started!</h2>
     </div>
+    <h2>Text "patient" or "provider" to <a href="sms:+1-866-739-8034">+1 (866) 739-8034</a> now to get started! (Message and data rates apply. You will not receive </h2>
+
+    {% for message in incoming_messages %}
+        <p>{{message}}</p>
+    {% endfor %}
     <img id= text_screen src="{{url_for('static',filename='text_screen.png')}}" alt="Simulated Text Screen">
     <footer>
         <p>Developed by Ahmed Kamhawy</p>

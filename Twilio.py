@@ -53,12 +53,13 @@ if __name__ == "__main__":
     print(fetch_messages_to_list())  
 
 
-def send_message(message_content="This is the ship that made the Kessel Run in fourteen parsecs?"):
+def send_message(message_content="This is the ship that made the Kessel Run in fourteen parsecs?", 
+                 target_phone_number=twilio_virtual_phone_number):
     client = Client(account_sid, auth_token)
     message = client.messages.create(
         body=message_content,
         from_=twilio_phone_number,
-        to=twilio_virtual_phone_number,
+        to= target_phone_number,
     )
     return message.sid, message.body
 

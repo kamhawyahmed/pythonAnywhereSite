@@ -26,6 +26,7 @@
     <div class="header">
         <img src="{{url_for('static',filename='vibecheck_tagline.png')}}" alt="VibeCheck Logo">
     </div>
+
     <img id= text_screen src="{{url_for('static',filename='text_screen.png')}}" alt="Simulated Text Screen">
     {% for message in incoming_messages %}
         <p>{{message}}</p>

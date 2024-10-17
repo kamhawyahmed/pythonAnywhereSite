@@ -135,11 +135,12 @@ with app.app_context(): #open the app on script run
 with app.app_context(): #open the app
     print(Twilio.fetch_messages_to_list()[-1])
     Twilio.fetch_and_log_messages()
-    Twilio.send_message()
+    Twilio.send_message("yoo", target_phone_number="+19172008360")
 
 @app.route('/vibecheck', methods=['GET', 'POST'])
 def vibecheck():
-    return render_template("vibecheck_home.html")
+    incoming_messages = Twilio.fetch_messages_to_list()
+    return render_template("vibecheck_home.html", incoming_messages=incoming_messages)
 
 @app.route('/vibecheck/text', methods=['GET', 'POST'])
 def sms():

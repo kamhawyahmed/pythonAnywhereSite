@@ -3,6 +3,7 @@
 #simulate virtual phone receiving and sending (either real to p# or simulated shown on website) messages
 #simulate database updating live with each entry
 #simulate online emr looking webpage for internet-based entry
+#have list of phone numbers "approved" and only display texts from them
 
 
 #need db backend
