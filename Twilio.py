@@ -45,9 +45,12 @@ def fetch_messages_to_list(twilio_phone_number=twilio_phone_number):
     messages_list = []
     auto_reply_message = "Thanks for the message. Configure your number's SMS URL to change this message.Reply HELP for help.Reply STOP to unsubscribe.Msg&Data rates may apply."
     for message in messages:
-        if message is not auto_reply_message:
+        if message.body != auto_reply_message:
             messages_list.append(message.body)
-    return messages_list
+    return messages_list  
+
+if __name__ == "__main__":
+    print(fetch_messages_to_list())  
 
 
 def send_message(message_content="This is the ship that made the Kessel Run in fourteen parsecs?"):
@@ -215,6 +218,3 @@ def main():
             doctor_view()
 
 
-if __name__ == "__main__":
-    print(send_message("hihihi"))
-    print(fetch_messages_to_list())

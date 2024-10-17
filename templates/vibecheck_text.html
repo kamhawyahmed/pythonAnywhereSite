@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Qur'an Memorization Tracker</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='memorization.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='memorization_home.css')}}">
+    <!-- Global comes before local css so local can override -->
+    <link rel="stylesheet" href="{{url_for('static', filename='global.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='vibecheck.css')}}">
+
     <link rel="stylesheet" href="{{url_for('static', filename='font-awesome/css/fontawesome.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='font-awesome/css/brands.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='font-awesome/css/solid.css')}}">
@@ -23,10 +25,12 @@
 
     <div class="header">
         <img src="{{url_for('static',filename='vibecheck_tagline.png')}}" alt="VibeCheck Logo">
-        <h1></h1>
-        <h2>Text "patient" or "provider" to <a href="sms:+1-866-739-8034">+1 (866) 739-8034</a> now to get started!</h2>
     </div>
-
+    <img id= text_screen src="{{url_for('static',filename='text_screen.png')}}" alt="Simulated Text Screen">
+    {% for message in incoming_messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+    <h2>Text "patient" or "provider" to <a href="sms:+1-866-739-8034">+1 (866) 739-8034</a> now to get started!</h2>
     <footer>
         <p>Developed by Ahmed Kamhawy</p>
     </footer>

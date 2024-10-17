@@ -138,9 +138,13 @@ with app.app_context(): #open the app
     Twilio.send_message()
 
 @app.route('/vibecheck', methods=['GET', 'POST'])
+def vibecheck():
+    return render_template("vibecheck_home.html")
+
+@app.route('/vibecheck/text', methods=['GET', 'POST'])
 def sms():
-    message = "Hello world"
-    return render_template("vibecheck.html", msg = message)
+    incoming_messages = Twilio.fetch_messages_to_list()
+    return render_template("vibecheck_text.html", incoming_messages= incoming_messages)
 
 #misc
 @app.route('/', methods=['GET', 'POST'])
@@ -257,6 +261,7 @@ def memorization_surah(surah_no):
                            datetime_last_updated = datetime_last_updated)
 
 
+#TODO move this to separate quranmemorization file and import direct to 
 def calculate_surah_memorized(surah):
     surah_memorized = 1
     for ayah in surah.ayat:
@@ -264,7 +269,7 @@ def calculate_surah_memorized(surah):
             surah_memorized = 0
     return surah_memorized
 
-def update_all_surah_memorized_manually():
+def update_all_surah_memorized_manually(app):
     with app.test_request_context():
         result = db.session.execute(db.select(Surah))
         surah_list = result.scalars().all()

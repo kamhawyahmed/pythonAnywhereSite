@@ -10,6 +10,7 @@ body{
   background-color: rgba(33,36,41,1);
   font-family: system-ui,Helvetica, Arial, sans-serif;
   font-weight: bold;
+  text-align: center;
 }
 
 footer {
@@ -23,7 +24,7 @@ footer {
   text-align: center;
 }
 
-h1, h2 {
+h1, h2, p {
   color: var(--text-color);
 }
 
