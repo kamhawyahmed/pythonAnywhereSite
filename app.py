@@ -4,9 +4,9 @@
 # error codes ignore
 
 # TODO list
-# TODO check for better font
 # TODO separate out surah name surah page like surah list
 # TODO add deeper shade button click colour
+# check for better font - DONE - i like this one
 # Make pretty home done
 # Make pretty surah page done
 # Reintegrate with pythonanywhere site done
@@ -27,11 +27,10 @@ from sqlalchemy import Integer, String, Float, ForeignKey, MetaData
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from typing import List
 from flask_migrate import Migrate
-
 import datetime as dt
 import availability_scheduler
+import Twilio
 
-print(dt.datetime.now().strftime('%B %d, %Y'))
 
 
 
@@ -64,8 +63,7 @@ migrate.init_app(app, db)
 
 
 
-# with app.app_context(): #open the app
-#     db.reflect()
+
 
 
 class Book(db.Model):
@@ -119,10 +117,30 @@ class MemorizationUserAyah(db.Model):
     timestamp_memorized: Mapped[int] = mapped_column(Integer)
     def __repr__(self):
         return f'<User {self.id}: {self.name}'
+    
+class Patient(db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
+    first_name: Mapped[str] = mapped_column(String)
+    last_name: Mapped[str] = mapped_column(String)
+
+
+
 
 with app.app_context(): #open the app on script run
     db.create_all()
 
+
+#vibecheck
+
+with app.app_context(): #open the app
+    print(Twilio.fetch_messages_to_list()[-1])
+    Twilio.fetch_and_log_messages()
+    Twilio.send_message()
+
+@app.route('/vibecheck', methods=['GET', 'POST'])
+def sms():
+    message = "Hello world"
+    return render_template("vibecheck.html", msg = message)
 
 #misc
 @app.route('/', methods=['GET', 'POST'])
@@ -147,6 +165,8 @@ def scheduler():
         output = availability_scheduler.availability_calculator(availability_scheduler.month_parser(month_num))
 
     return render_template("scheduler.html", output=output)
+
+
 
 
 
