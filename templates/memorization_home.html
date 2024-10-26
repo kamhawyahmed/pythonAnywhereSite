@@ -23,6 +23,7 @@
 
     <div class="header">
         <h1>Qur'an Memorization Tracker</h1>
+        <a href="/memorization/auth">Current User: {{session['username']}}</a>
     </div>
     <div class="list container">
         {% for i in range(1,30 + 1) %}

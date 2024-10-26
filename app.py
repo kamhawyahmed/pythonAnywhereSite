@@ -23,12 +23,13 @@
 #    #html loop for 114 buttons DONE
 #    #integrate data from main.py DONE
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Integer, String, Float, ForeignKey, MetaData
+from sqlalchemy import Integer, String, Float, ForeignKey, MetaData, or_, and_
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from typing import List
 from flask_migrate import Migrate
+from flask_login import LoginManager
 import datetime as dt
 import availability_scheduler
 import Twilio
@@ -47,7 +48,12 @@ naming_convention = {
 #
 
 
+
 app = Flask(__name__)
+
+# Set the secret key to some random bytes. Keep this really secret!
+app.secret_key = "328d8ac49c90850bb64a7d6bf762354fdbcb5f72ef37d198dfccf724e2ae116f"
+login_manager = LoginManager()
 
 class Base(DeclarativeBase):
     metadata = MetaData(naming_convention=naming_convention)
@@ -62,6 +68,11 @@ db = SQLAlchemy(model_class=Base) #naming convention for flask-migrate
 migrate = Migrate(app, db,render_as_batch=True)
 db.init_app(app)
 migrate.init_app(app, db)
+
+
+
+
+# login_manager.init_app(app)
 
 
 
@@ -107,6 +118,7 @@ class Ayah(db.Model):
     ayah_ar: Mapped[str] = mapped_column(String)
     ayah_no_quran: Mapped[int] = mapped_column(Integer, unique=True)
     timestamp_memorized: Mapped[int] = mapped_column(Integer)
+    users_ayah: Mapped[List["MemorizationUserAyah"]] = relationship(back_populates="ayah")
     # Optional: this will allow each book object to be identified by its title when printed.
     def __repr__(self):
         return f'<Ayah {self.surah_no}:{self.ayah_no_surah}>'
@@ -117,8 +129,10 @@ class MemorizationUserAyah(db.Model):
     ayah_no_quran: Mapped[int] = mapped_column(ForeignKey("ayah.ayah_no_quran"))
     ayah_memorized: Mapped[int] = mapped_column(Integer)
     timestamp_memorized: Mapped[int] = mapped_column(Integer)
+    surah_memorized: Mapped[int] = mapped_column(Integer)
+    ayah: Mapped[List["Ayah"]] = relationship(back_populates="users_ayah")
     def __repr__(self):
-        return f'<User {self.id}: {self.name}'
+        return f'<User Record {self.name}:{self.id} - {self.ayah}>'
     
 class Patient(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
@@ -221,6 +235,21 @@ def library_delete(id):
     return redirect(url_for('library_home'))
 
 
+
+# with app.test_request_context():
+    # session["username"] = "Guest"
+    # result = db.session.execute(db.select(MemorizationUserAyah).where(and_(Ayah.surah_no == 1, MemorizationUserAyah.name == session["username"])).join(Ayah, Ayah.ayah_no_quran == MemorizationUserAyah.ayah_no_quran))
+    # user_ayat = result.scalars().all()
+    # print(user_ayat)
+    # result = db.session.execute(db.select(Surah).where(and_(Surah.surah_no == 1, Surah.ayat[0].users)))
+    # surah_selected = result.scalar()
+    # print(surah_selected.ayat[0].users[0].ayah_memorized)
+
+    #get ayah_mem for user_ayah where user_name is ahmed
+
+
+
+
 #Quran Memorization
 @app.route('/memorization/', methods=['GET'])
 def memorization_home():
@@ -228,63 +257,93 @@ def memorization_home():
     surahs = result.scalars().all()
     return render_template("memorization_home.html", surahs = surahs)
 
+@app.route('/memorization/auth', methods=['GET', 'POST'])
+def memorization_auth():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return redirect(url_for('memorization_home'))
+    user_names_ayat = db.session.execute(db.select(MemorizationUserAyah.name))
+    user_names = list(set(user_names_ayat))
+
+    return render_template("memorization_auth.html", user_names = user_names)
+
 @app.route('/memorization/surah/<surah_no>', methods=['GET', 'POST'])
 def memorization_surah(surah_no):
     result = db.session.execute(db.select(Surah).where(Surah.surah_no == surah_no))
-    surah_selected = result.scalar()
+    surah_selected = result.scalar() 
+
+    result = db.session.execute(db.select(MemorizationUserAyah).where(and_(Ayah.surah_no == surah_no, MemorizationUserAyah.name == session["username"])).join(Ayah, Ayah.ayah_no_quran == MemorizationUserAyah.ayah_no_quran))
+    user_ayat_selected = result.scalars().all()
 
     now = dt.datetime.now()
     if request.method == 'POST':
         key = list(request.form.keys())[0]
         if "surah" in key:
-            surah_selected.surah_memorized = 1 - surah_selected.surah_memorized
-            ayat_selected = surah_selected.ayat
-            for ayah_selected in ayat_selected:
-                ayah_selected.ayah_memorized = surah_selected.surah_memorized
-                ayah_selected.timestamp_memorized = int(now.timestamp())
+            for user_ayah in user_ayat_selected:
+                user_ayah.surah_memorized = 1 - user_ayah.surah_memorized
+                user_ayah.ayah_memorized = user_ayah.surah_memorized
+                user_ayah.timestamp_memorized = int(now.timestamp())
             db.session.commit()
         elif "ayah" in key:
             ayah_no = [int(s) for s in key.split("_") if s.isdigit()][0]
-            ayah_selected = surah_selected.ayat[ayah_no - 1]
-            ayah_selected.ayah_memorized = 1 - ayah_selected.ayah_memorized
-            ayah_selected.timestamp_memorized = int(now.timestamp())
-            surah_selected.surah_memorized = calculate_surah_memorized(surah_selected)
+            user_ayah_selected = user_ayat_selected[ayah_no - 1]
+            user_ayah_selected.ayah_memorized = 1 - user_ayah_selected.ayah_memorized
+            user_ayah_selected.timestamp_memorized = int(now.timestamp())
+            for user_ayah in user_ayat_selected:
+                user_ayah.surah_memorized = calculate_surah_memorized(user_ayah_selected)
             db.session.commit()
 
-    # first_ayah_timestamp = surah_selected.ayat[0].timestamp_memorized or 0
-    # datetime_last_updated = dt.datetime.fromtimestamp(first_ayah_timestamp).strftime('%B %d, %Y %I:%M %p')
-
     surah_timestamp = 0
-    for ayah_selected in surah_selected.ayat:
-        ayah_timestamp = ayah_selected.timestamp_memorized or 0
+    for user_ayah in user_ayat_selected:
+        ayah_timestamp = user_ayah.timestamp_memorized or 0
         surah_timestamp = max(ayah_timestamp, surah_timestamp)
     datetime_last_updated = dt.datetime.fromtimestamp(surah_timestamp).strftime('%B %d, %Y %I:%M %p')
     return render_template("memorization_surah.html",
+                           user_ayat_selected = user_ayat_selected,
                            surah_selected = surah_selected, 
                            datetime_last_updated = datetime_last_updated)
 
 
-#TODO move this to separate quranmemorization file and import direct to 
-def calculate_surah_memorized(surah):
+#TODO move this to separate quranmemorization file and import direct or maybe to blueprint not sure how blueprint works with non-app fxn
+def calculate_surah_memorized(user_ayah):
+    """ user_ayah = user_ayah"""
     surah_memorized = 1
-    for ayah in surah.ayat:
-        if ayah.ayah_memorized == 0:
-            surah_memorized = 0
+    #for relevant surah
+    for ayah in user_ayah.ayah.surah.ayat: 
+    #for all users
+        for users_ayah in ayah.users_ayah:
+            #make sure relevant user
+            if users_ayah.name == user_ayah.name:
+                #if user_ayah not mem
+                if users_ayah.ayah_memorized == 0:
+                    #surah not mem
+                    surah_memorized = 0
     return surah_memorized
 
 def update_all_surah_memorized_manually(app):
     with app.test_request_context():
-        result = db.session.execute(db.select(Surah))
-        surah_list = result.scalars().all()
-        for surah in surah_list:
+        result = db.session.execute(db.select(MemorizationUserAyah))
+        user_ayah_list = result.scalars().all()
+        for user_ayah in user_ayah_list:
             surah_memorized = 1
-            for ayah in surah.ayat:
-                if ayah.ayah_memorized == 0:
-                    surah_memorized = 0
-                    print(surah.surah_no, ayah.ayah_no_surah, ayah.ayah_memorized, surah_memorized)
-            surah.surah_memorized = surah_memorized
+                #for relevant surah
+            for ayah in user_ayah.ayah.surah.ayat: 
+            #for all users
+                for users_ayah in ayah.users_ayah:
+                    #make sure relevant user
+                    if users_ayah.name == user_ayah.name:
+                        #if user_ayah not mem
+                        if users_ayah.ayah_memorized == 0:
+                            #surah not mem
+                            surah_memorized = 0
+            #update mem to 0 or keep as 1
+            user_ayah.surah_memorized = surah_memorized
         db.session.commit()
     return
 
+
+
+
 if __name__ == "__main__":
+    # update_all_surah_memorized_manually()
     app.run(host='0.0.0.0', port=2000,debug=True)

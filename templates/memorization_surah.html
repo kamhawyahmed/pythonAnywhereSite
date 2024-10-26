@@ -34,16 +34,18 @@
     <form method="POST", id="toggle_ayat">
         <div class="surah_div">
             <div id="surah_name">
-                <input class="{{'memorized' if surah_selected.surah_memorized == 1}} surah"
+                <input class="{{'memorized' if user_records_selected[0].surah_memorized == 1}} surah"
                        type="submit"
                        name="toggle_surah_{{surah_selected.surah_no}}"
                        value="{{surah_selected.surah_name_roman}} - {{surah_selected.surah_no}}">
                 <p>Last updated: {{datetime_last_updated}}</p>
+                <a href="/memorization/auth">Current User: {{session['username']}}</a>
+
             </div>
             {% for j in range(0,surah_selected.total_ayah_surah) %}
             <div class="ayah">
                 <div class="ayah_num_div">
-                    <input class="{{'memorized' if surah_selected.ayat[j].ayah_memorized}} ayah_num"
+                    <input class="{{'memorized' if user_records_selected[j].ayah_memorized}} ayah_num"
                            type="submit"
                            name="toggle_ayah_{{surah_selected.ayat[j].ayah_no_surah}}"
                            value="{{j+1}}">

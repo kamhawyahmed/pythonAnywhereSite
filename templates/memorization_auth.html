@@ -24,9 +24,11 @@
     <div class="header">
         <h1>Qur'an Memorization Tracker</h1>
     </div>
-    <div class="users">
-
-    </div>
+    <form method="POST">
+    {% for user in user_names %}
+    <input type="submit" name="username" value="{{user[0]}}">
+    {% endfor %}
+    </form>
     <footer>
         <p>Developed by Ahmed Kamhawy</p>
     </footer>
