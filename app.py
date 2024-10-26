@@ -8,6 +8,7 @@
 # TODO list
 # TODO separate out surah name surah page like surah list
 # TODO add deeper shade button click colour
+# TODO change home page for surah mem user ayah
 # check for better font - DONE - i like this one
 # Make pretty home done
 # Make pretty surah page done
@@ -255,7 +256,10 @@ def library_delete(id):
 def memorization_home():
     result = db.session.execute(db.select(Surah))
     surahs = result.scalars().all()
-    return render_template("memorization_home.html", surahs = surahs)
+
+    result = db.session.execute(db.select(MemorizationUserAyah).where(MemorizationUserAyah.name == session["username"]))
+    user_ayat = result.scalars().all()
+    return render_template("memorization_home.html", surahs = surahs, user_ayat = user_ayat)
 
 @app.route('/memorization/auth', methods=['GET', 'POST'])
 def memorization_auth():
