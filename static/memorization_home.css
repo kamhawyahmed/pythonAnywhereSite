@@ -14,6 +14,11 @@
   gap: var(--spacing-small);
 }
 
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
 .item {
   text-decoration: none;
 

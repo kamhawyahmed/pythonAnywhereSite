@@ -238,7 +238,9 @@ def library_delete(id):
 
 
 # with app.test_request_context():
-    # session["username"] = "Guest"
+    # if not session["username"]:
+    #     session["username"] = "Ahmed"
+    # print(session["username"])
     # result = db.session.execute(db.select(MemorizationUserAyah).where(and_(Ayah.surah_no == 1, MemorizationUserAyah.name == session["username"])).join(Ayah, Ayah.ayah_no_quran == MemorizationUserAyah.ayah_no_quran))
     # user_ayat = result.scalars().all()
     # print(user_ayat)
@@ -254,9 +256,15 @@ def library_delete(id):
 #Quran Memorization
 @app.route('/memorization/', methods=['GET'])
 def memorization_home():
+
     result = db.session.execute(db.select(Surah))
     surahs = result.scalars().all()
-
+    try:
+        session["username"]
+    except KeyError as e:
+        print ('KeyError for key: "%s" - assigning username to Ahmed' % str(e))
+        session["username"] = "Ahmed"
+    
     result = db.session.execute(db.select(MemorizationUserAyah).where(MemorizationUserAyah.name == session["username"]))
     user_ayat = result.scalars().all()
     return render_template("memorization_home.html", surahs = surahs, user_ayat = user_ayat)
@@ -264,7 +272,17 @@ def memorization_home():
 @app.route('/memorization/auth', methods=['GET', 'POST'])
 def memorization_auth():
     if request.method == 'POST':
-        session['username'] = request.form['username']
+        key = list(request.form.keys())[0]
+        if "username" in key:
+            session['username'] = request.form['username']
+        elif "new_user" in key:
+            session['username'] = request.form['new_user']
+            #TODO add 1 record for every ayah with these specs
+            for i in range(1,6237):
+                new_user_ayah = MemorizationUserAyah(name = request.form["new_user"], ayah_no_quran = i, ayah_memorized = 0, timestamp_memorized = None, surah_memorized = 0)
+                db.session.add(new_user_ayah)
+            db.session.commit()
+
         return redirect(url_for('memorization_home'))
     user_names_ayat = db.session.execute(db.select(MemorizationUserAyah.name))
     user_names = list(set(user_names_ayat))
@@ -296,6 +314,9 @@ def memorization_surah(surah_no):
             for user_ayah in user_ayat_selected:
                 user_ayah.surah_memorized = calculate_surah_memorized(user_ayah_selected)
             db.session.commit()
+        return redirect(url_for('memorization_surah', surah_no= surah_no))
+        
+            
 
     surah_timestamp = 0
     for user_ayah in user_ayat_selected:
