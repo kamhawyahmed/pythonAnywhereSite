@@ -9,8 +9,8 @@
 # TODO list
 # TODO separate out surah name surah page like surah list
 # TODO add deeper shade button click colour
-# TODO change home page for surah mem user ayah
-# check for better font - DONE - i like this one
+#  change home page for surah mem user ayah - DONE
+# check for better font - DONE - i like current (original) one
 # Make pretty home done
 # Make pretty surah page done
 # Reintegrate with pythonanywhere site done
@@ -33,6 +33,7 @@ from typing import List
 from flask_migrate import Migrate
 from flask_login import LoginManager
 import datetime as dt
+from zoneinfo import ZoneInfo
 import availability_scheduler
 import Twilio
 
@@ -236,44 +237,7 @@ def library_delete(id):
     db.session.commit()
     return redirect(url_for('library_home'))
 
-
-
-# with app.test_request_context():
-    # if not session["username"]:
-    #     session["username"] = "Ahmed"
-    # print(session["username"])
-    # result = db.session.execute(db.select(MemorizationUserAyah).where(and_(Ayah.surah_no == 1, MemorizationUserAyah.name == session["username"])).join(Ayah, Ayah.ayah_no_quran == MemorizationUserAyah.ayah_no_quran))
-    # user_ayat = result.scalars().all()
-    # print(user_ayat)
-    # result = db.session.execute(db.select(Surah).where(and_(Surah.surah_no == 1, Surah.ayat[0].users)))
-    # surah_selected = result.scalar()
-    # print(surah_selected.ayat[0].users[0].ayah_memorized)
-
-    #get ayah_mem for user_ayah where user_name is ahmed
-
-
-
-
 #Quran Memorization
-#TODO how to get surah mem first record of user ayat
-    #user ayat = record for every ayah for specific user
-    #for specific surah num:
-        #what is user ayah with that surah num
-
-# with app.test_request_context():
-#     session["username"] = "Ahmed"
-#     result = db.session.execute(db.select(MemorizationUserAyah).where(MemorizationUserAyah.ayah.has(Ayah.ayah_no_surah == 1)).where(MemorizationUserAyah.name == session["username"]))
-#         # name == session["username"]) & (Ayah.ayah_no_surah == 1)))
-#     user_first_ayat_of_surahs = result.scalars().all()
-#     surah_mem_list = []
-#     for ayah in user_first_ayat_of_surahs:
-#         if ayah.ayah_no_quran == 2:
-#             print(ayah)
-#         print(ayah)
-
-#     print(len(user_first_ayat_of_surahs))
-#     print(surah_mem_list)
-
 @app.route('/memorization/', methods=['GET'])
 def memorization_home():
 
@@ -340,7 +304,8 @@ def memorization_surah(surah_no):
     for user_ayah in user_ayat_selected:
         ayah_timestamp = user_ayah.timestamp_memorized or 0
         surah_timestamp = max(ayah_timestamp, surah_timestamp)
-    datetime_last_updated = dt.datetime.fromtimestamp(surah_timestamp).strftime('%B %d, %Y %I:%M %p')
+    datetime_last_updated = dt.datetime.fromtimestamp(surah_timestamp)
+    datetime_last_updated = datetime_last_updated.replace(tzinfo=ZoneInfo("America/New_York")).strftime('%B %d, %Y %I:%M %p %Z')
     return render_template("memorization_surah.html",
                            user_ayat_selected = user_ayat_selected,
                            surah_selected = surah_selected, 
@@ -363,7 +328,7 @@ def calculate_surah_memorized(user_ayah):
                     surah_memorized = 0
     return surah_memorized
 
-def update_all_surah_memorized_manually(app):
+def update_all_surah_memorized_manually(app=app):
     with app.test_request_context():
         result = db.session.execute(db.select(MemorizationUserAyah))
         user_ayah_list = result.scalars().all()
