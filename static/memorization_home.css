@@ -40,6 +40,9 @@ a {
     border-color: rgba(81,164,171,1) !important;
 
   }
+  .item_div:active {
+    border-color: rgba(130, 191, 196,1) !important;
+  }
   
 .memorized {
   border-color: rgba(82, 169, 96, 1) !important;

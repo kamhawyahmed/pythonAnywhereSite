@@ -7,8 +7,9 @@
 # error codes ignore
 
 # TODO list
-# TODO separate out surah name surah page like surah list
-# TODO add deeper shade button click colour
+# TODO make frontend JS to update ayat while on surah page visually and store changes and only access backend once when leave surah page
+# separate out surah name surah page like surah list - not happening with input buttons
+#  add deeper shade button click colour - DONE
 #  change home page for surah mem user ayah - DONE
 # check for better font - DONE - i like current (original) one
 # Make pretty home done
@@ -305,8 +306,7 @@ def memorization_surah(surah_no):
         ayah_timestamp = user_ayah.timestamp_memorized or 0
         surah_timestamp = max(ayah_timestamp, surah_timestamp)
     datetime_last_updated = dt.datetime.fromtimestamp(surah_timestamp)
-    # datetime_last_updated = datetime_last_updated.replace(tzinfo=ZoneInfo("UTC")) 
-    datetime_last_updated = datetime_last_updated.astimezone(ZoneInfo("America/New_York")) #is utc on server
+    datetime_last_updated = datetime_last_updated.astimezone(ZoneInfo("America/New_York")) #is utc on server est on client but somehow it works for both ?? (dev client, no prod client timezone calc done here)
     datetime_last_updated = datetime_last_updated.strftime('%B %d, %Y %I:%M %p %Z')
     return render_template("memorization_surah.html",
                            user_ayat_selected = user_ayat_selected,

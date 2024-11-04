@@ -67,6 +67,9 @@ input {
   input:hover {
     border-color: rgba(81,164,171,1) !important; 
   }
+  input:active {
+    border-color: rgba(130, 191, 196,1) !important;
+  }
 
 .ayah_num_div {
   display:flex;
