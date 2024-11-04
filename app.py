@@ -305,7 +305,9 @@ def memorization_surah(surah_no):
         ayah_timestamp = user_ayah.timestamp_memorized or 0
         surah_timestamp = max(ayah_timestamp, surah_timestamp)
     datetime_last_updated = dt.datetime.fromtimestamp(surah_timestamp)
-    datetime_last_updated = datetime_last_updated.replace(tzinfo=ZoneInfo("America/New_York")).strftime('%B %d, %Y %I:%M %p %Z')
+    datetime_last_updated = datetime_last_updated.replace(tzinfo=ZoneInfo("UTC"))
+    datetime_last_updated = datetime_last_updated.astimezone(ZoneInfo("America/New_York"))
+    datetime_last_updated = datetime_last_updated.strftime('%B %d, %Y %I:%M %p %Z') + ", " + str(surah_timestamp)
     return render_template("memorization_surah.html",
                            user_ayat_selected = user_ayat_selected,
                            surah_selected = surah_selected, 
