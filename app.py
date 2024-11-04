@@ -1,8 +1,9 @@
 #PYTHONANYWHERE SETUP INSTRUCTIONS -
+# migrate db if needed
 # cd pythonAnywhereSite
 # git pull
 # source ../.virtualenvs/my-virtualenv/bin/activate - activate venc
-# pip3.10 install --user -r requirements.txt or added modules
+# pip3.10 install -r requirements.txt or added modules
 # error codes ignore
 
 # TODO list
