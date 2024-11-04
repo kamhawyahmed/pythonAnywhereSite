@@ -8,6 +8,8 @@
 
 # TODO list
 # TODO make frontend JS to update ayat while on surah page visually and store changes and only access backend once when leave surah page
+# TODO style acct mngmt w/ tailwind css
+# add delete user button
 # separate out surah name surah page like surah list - not happening with input buttons
 #  add deeper shade button click colour - DONE
 #  change home page for surah mem user ayah - DONE
@@ -265,6 +267,15 @@ def memorization_auth():
                 new_user_ayah = MemorizationUserAyah(name = request.form["new_user"], ayah_no_quran = i, ayah_memorized = 0, timestamp_memorized = None, surah_memorized = 0)
                 db.session.add(new_user_ayah)
             db.session.commit()
+        elif "delete_user" in key:
+            user_to_delete = request.form["delete_user"][7:]
+            print(user_to_delete)
+            result = db.session.execute(db.select(MemorizationUserAyah).where(MemorizationUserAyah.name == user_to_delete))
+            records_to_delete = result.scalars().all()
+            for record in records_to_delete:
+                db.session.delete(record)
+            db.session.commit()
+            return redirect(url_for('memorization_auth'))
 
         return redirect(url_for('memorization_home'))
     user_names_ayat = db.session.execute(db.select(MemorizationUserAyah.name))

@@ -26,7 +26,10 @@
     </div>
     <form method="POST">
     {% for user in user_names %}
-    <input type="submit" name="username" value="{{user[0]}}">
+        <input type="submit" name="username" value="{{user[0]}}">
+        {% if user[0] != "Ahmed" and user[0] != "Guest" %}
+            <input type="submit" name="delete_user" value="Delete {{user[0]}}">
+        {% endif %}
     {% endfor %}
     <input name="new_user" type="text"/>
     <input type="submit" name="new_user_submit" value="New User">
