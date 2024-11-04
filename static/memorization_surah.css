@@ -29,6 +29,9 @@
    .home:hover {
      border-color: rgba(81,164,171,1) !important; 
    }
+   .home:active {
+    border-color: rgba(130, 191, 196,1) !important;
+  }
 
 @media screen and (min-width: 576px) {
 .home {
