@@ -133,7 +133,7 @@ class MemorizationUserAyah(db.Model):
     surah_memorized: Mapped[int] = mapped_column(Integer)
     ayah: Mapped[List["Ayah"]] = relationship(back_populates="users_ayah")
     def __repr__(self):
-        return f'<User Record {self.name}:{self.id} - {self.ayah}>'
+        return f'<User Record {self.name} (ID:{self.id}) - {self.ayah}>'
     
 class Patient(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True)
@@ -149,10 +149,10 @@ with app.app_context(): #open the app on script run
 
 #vibecheck
 
-with app.app_context(): #open the app
-    print(Twilio.fetch_messages_to_list()[-1])
-    Twilio.fetch_and_log_messages()
-    Twilio.send_message("yoo", target_phone_number="+19172008360")
+# with app.app_context(): #open the app
+    # print(Twilio.fetch_messages_to_list()[-1])
+    # Twilio.fetch_and_log_messages()
+    # Twilio.send_message("yoo", target_phone_number="+19172008360")
 
 @app.route('/vibecheck', methods=['GET', 'POST'])
 def vibecheck():
@@ -254,6 +254,25 @@ def library_delete(id):
 
 
 #Quran Memorization
+#TODO how to get surah mem first record of user ayat
+    #user ayat = record for every ayah for specific user
+    #for specific surah num:
+        #what is user ayah with that surah num
+
+# with app.test_request_context():
+#     session["username"] = "Ahmed"
+#     result = db.session.execute(db.select(MemorizationUserAyah).where(MemorizationUserAyah.ayah.has(Ayah.ayah_no_surah == 1)).where(MemorizationUserAyah.name == session["username"]))
+#         # name == session["username"]) & (Ayah.ayah_no_surah == 1)))
+#     user_first_ayat_of_surahs = result.scalars().all()
+#     surah_mem_list = []
+#     for ayah in user_first_ayat_of_surahs:
+#         if ayah.ayah_no_quran == 2:
+#             print(ayah)
+#         print(ayah)
+
+#     print(len(user_first_ayat_of_surahs))
+#     print(surah_mem_list)
+
 @app.route('/memorization/', methods=['GET'])
 def memorization_home():
 
@@ -264,10 +283,9 @@ def memorization_home():
     except KeyError as e:
         print ('KeyError for key: "%s" - assigning username to Ahmed' % str(e))
         session["username"] = "Ahmed"
-    
-    result = db.session.execute(db.select(MemorizationUserAyah).where(MemorizationUserAyah.name == session["username"]))
-    user_ayat = result.scalars().all()
-    return render_template("memorization_home.html", surahs = surahs, user_ayat = user_ayat)
+    result = db.session.execute(db.select(MemorizationUserAyah).where(MemorizationUserAyah.ayah.has(Ayah.ayah_no_surah == 1)).where(MemorizationUserAyah.name == session["username"]))
+    user_first_ayat_of_surahs = result.scalars().all()
+    return render_template("memorization_home.html", surahs = surahs, user_first_ayat_of_surahs = user_first_ayat_of_surahs)
 
 @app.route('/memorization/auth', methods=['GET', 'POST'])
 def memorization_auth():
@@ -277,7 +295,6 @@ def memorization_auth():
             session['username'] = request.form['username']
         elif "new_user" in key:
             session['username'] = request.form['new_user']
-            #TODO add 1 record for every ayah with these specs
             for i in range(1,6237):
                 new_user_ayah = MemorizationUserAyah(name = request.form["new_user"], ayah_no_quran = i, ayah_memorized = 0, timestamp_memorized = None, surah_memorized = 0)
                 db.session.add(new_user_ayah)

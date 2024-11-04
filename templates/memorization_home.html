@@ -27,22 +27,28 @@
     </div>
     <div class="list container">
         {% for i in range(1,30 + 1) %}
+
             <!-- <div class="juz {{i}}" style="background-color: #EBEBEB"> -->
                 <!-- <p>Juz' {{i}}</p> -->
-                {% for surah in surahs %}
-                    {% if surah.juz_no == i %}
-                            <a 
-                            href="{{ url_for('memorization_surah', surah_no = surah.surah_no)}}"
-                            class=" item" 
-                            name="select_{{surah.surah_no}}">
-                                <div class="{{'memorized' if surah.surah_memorized == 1}} item_div"> 
-                                    <div class="number">{{surah.surah_no}}</div>
-                                    <div class="name">{{surah.surah_name_roman}}</div>
-                                </div>
 
-                            </a>
+
+                    {% for user_first_ayah_of_surah in user_first_ayat_of_surahs %}
+                    {% if user_first_ayah_of_surah.ayah.surah.juz_no == i %}
+
+                                <a 
+                                href="{{ url_for('memorization_surah', surah_no = user_first_ayah_of_surah.ayah.surah_no)}}"
+                                class=" item" 
+                                name="select_{{user_first_ayah_of_surah.ayah.surah_no}}">
+                                    <div class="{{'memorized' if user_first_ayah_of_surah.surah_memorized == 1}} item_div"> 
+                                        <div class="number">{{user_first_ayah_of_surah.ayah.surah_no}}</div>
+                                        <div class="name">{{user_first_ayah_of_surah.ayah.surah_name_roman}}</div>
+                                    </div>
+
+                                </a>
                     {% endif %}
-                {% endfor %} 
+
+                    {% endfor %}
+
         {% endfor %}
     </div>
     <footer>
