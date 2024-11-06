@@ -1,0 +1,54 @@
+ .container {
+    background-color: rgba(107, 127, 215,1);
+} 
+.container-center{
+    /* display:inline-block; */
+    display: flex;
+    margin:0 auto;
+    justify-content: center;
+  }
+
+.highlighted_cell {
+    background-image: linear-gradient(to bottom,rgb(204, 201, 0),rgb(204, 153, 0));
+}
+
+  .table-condensed {
+    background-color: rgba(255,255,255,1);
+    border: dashed;
+    padding: 10px;
+    font-size: 1.1rem;
+
+  }
+
+  .datepicker .datepicker-switch {
+    padding: 10px;
+  }
+
+  .datepicker .clear {
+    background: linear-gradient(to bottom,#08c,#04c);
+  }
+  .datepicker td {
+    padding: 5px;
+  }
+  .datepicker .old {
+    background-color: rgba(255,255,242,1);
+  }
+  .datepicker .old, .datepicker .new {
+    visibility: hidden;
+    color: red !important; 
+  }
+
+  .datepicker .today {
+    background-image: none !important;
+  }
+
+  .td {
+    background-color: #08c;
+  }
+
+  .dow {
+    font-size: 0.5rem;
+  }
+  .next, .prev {
+    visibility: hidden !important;
+  }

@@ -240,12 +240,12 @@ def library_delete(id):
     db.session.commit()
     return redirect(url_for('library_home'))
 
+
+
+
 #Quran Memorization
 @app.route('/memorization/', methods=['GET'])
 def memorization_home():
-
-    result = db.session.execute(db.select(Surah))
-    surahs = result.scalars().all()
     try:
         session["username"]
     except KeyError as e:
@@ -253,7 +253,7 @@ def memorization_home():
         session["username"] = "Ahmed"
     result = db.session.execute(db.select(MemorizationUserAyah).where(MemorizationUserAyah.ayah.has(Ayah.ayah_no_surah == 1)).where(MemorizationUserAyah.name == session["username"]))
     user_first_ayat_of_surahs = result.scalars().all()
-    return render_template("memorization_home.html", surahs = surahs, user_first_ayat_of_surahs = user_first_ayat_of_surahs)
+    return render_template("memorization_home.html", user_first_ayat_of_surahs = user_first_ayat_of_surahs)
 
 @app.route('/memorization/auth', methods=['GET', 'POST'])
 def memorization_auth():
