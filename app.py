@@ -8,7 +8,7 @@
 
 # TODO list
 # TODO make frontend JS to update ayat while on surah page visually and store changes and only access backend once when leave surah page
-# TODO style acct mngmt w/ tailwind css
+# TODO style acct mngmt w/ tailwind css + flowbite
 # add delete user button
 # separate out surah name surah page like surah list - not happening with input buttons
 #  add deeper shade button click colour - DONE
@@ -37,6 +37,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 import datetime as dt
 from zoneinfo import ZoneInfo
+from livereload import Server
 import availability_scheduler
 import Twilio
 
@@ -69,6 +70,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///quran_data.db" #default bind
 app.config["SQLALCHEMY_BINDS"] = {
     "library": "sqlite:///new-books-collection.db"
 }
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
 # app.config["SQLALCHEMY_ECHO"] = True
 db = SQLAlchemy(model_class=Base) #naming convention for flask-migrate
 migrate = Migrate(app, db,render_as_batch=True)
@@ -172,6 +175,8 @@ def sms():
 #misc
 @app.route('/', methods=['GET', 'POST'])
 def hello_world():
+    print('')
+    print("helo")
     return render_template("index.html")
 
 @app.route('/test', methods=['GET', 'POST'])
@@ -220,7 +225,7 @@ def library_add():
         db.session.commit()
         return redirect(url_for('library_home'))
 
-    return render_template("library_add.html")
+    return render_template("library_add_new.html")
 
 @app.route("/library/update/<id>", methods=['GET','POST'])
 def library_update(id):
@@ -364,7 +369,9 @@ def update_all_surah_memorized_manually(app=app):
 
 
 
-
 if __name__ == "__main__":
     # update_all_surah_memorized_manually()
-    app.run(host='0.0.0.0', port=2000,debug=True)
+    
+    # server = Server(app.wsgi_app) #FOR STATIC EDITING
+    # server.serve()
+    app.run(debug=True, use_reloader=True) #FOR PY EDITING

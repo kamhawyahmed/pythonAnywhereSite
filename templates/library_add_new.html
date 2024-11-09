@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block headertags %}
+<link rel="stylesheet" href="{{ url_for('static', filename='test.css')}}" />
+{% endblock %}
+
+{% block title %}
+Add Books
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Add Book to Library</h1>
+  <form action="{{ url_for('library_add') }}" method="POST">
+    <label>Book Name:</label>
+    <input name="title" type="text" /> <br>
+    <label>Book Author:</label>
+    <input name="author" type="text" /> <br>
+    <label>Rating:</label>
+    <input name="rating" type="text" /> <br> <br>
+    <button type="submit">Add Book</button>
+  </form>
+{% endblock %}

@@ -6,13 +6,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{url_for('static', filename='global.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='scheduler.css')}}">
+    <!-- Favicons -->
+    <link href="{{url_for('static', filename='favicon.png')}}" rel="icon"/>
+    <link href="{{url_for('static', filename='apple-touch-icon.png')}}" rel="apple-touch-icon"/>
+    
 
-    <title>Southlake Availability Scheduler</title>
+    <title>Availability Scheduler</title>
 </head>
 <body>
 <!-- JINJA - ALL WITHIN DOUBLE CURLY GET EVALUATED AS PY CODE-->
 <!--MULTI LINE JINJA - MULTI LINE PY IN HTML HERE -&#45;&#45; MAINLY FOR LOOPS IFS-->
-<h1 style="margin-bottom: 0;">Availability Schedule Formatter</h1>
+<h1 style="margin-bottom: 0;">Availability Scheduler</h1>
 <br>
 <div style="padding-bottom:40px;">
     <p style="margin: none;">Select Month:</p>
