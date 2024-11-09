@@ -175,8 +175,6 @@ def sms():
 #misc
 @app.route('/', methods=['GET', 'POST'])
 def hello_world():
-    print('')
-    print("helo")
     return render_template("index.html")
 
 @app.route('/test', methods=['GET', 'POST'])
@@ -374,4 +372,4 @@ if __name__ == "__main__":
     
     # server = Server(app.wsgi_app) #FOR STATIC EDITING
     # server.serve()
-    app.run(debug=True, use_reloader=True) #FOR PY EDITING
+    app.run(debug=True) #FOR PY EDITING
