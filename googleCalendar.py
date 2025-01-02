@@ -45,7 +45,7 @@ def create_event(event_name, startDateTime, endDateTime, colorId):
     if EVENT["colorId"] == "invalid":
         EVENT.pop('colorId', None)
 
-    event_object = service.events().insert(calendarId="c61764f38171d3c2c736b09d5c9e1fe517271f584d500aad7ee837fac6baa457@group.calendar.google.com", sendNotifications=False, body=EVENT).execute()
+    event_object = service.events().insert(calendarId="6831b154a13a31321f8d3b3e6cdde303f96a8003b79e6366a69664bb2a4bd26f@group.calendar.google.com", sendNotifications=False, body=EVENT).execute()
     return event_object
 
   except HttpError as error:

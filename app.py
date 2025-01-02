@@ -195,10 +195,10 @@ def scheduler():
     if request.method == 'POST':
         #for each key received
         for key in request.form.keys():
-                #if key FACT name events FACT Shift , if LAP name LAP Shift
+            #if key FACT name events FACT Shift , if LAP name LAP Shift
             if key == "FACTDatesStrings[]":
                 event_name = "FACT Shift"
-            elif key == "LAPShiftStrings[]":
+            elif key == "LAPDatesStrings[]":
                 event_name = "LAP Shift"
             date_strings = request.form.getlist(key)
             print(key, request.form.getlist(key))
