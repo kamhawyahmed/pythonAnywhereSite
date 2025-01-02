@@ -63,7 +63,6 @@ numpy==2.1.1
 oauthlib==3.2.2
 openai==1.51.2
 packaging==24.1
-pandas==2.2.3
 pandocfilters==1.5.1
 parso==0.8.4
 pexpect==4.9.0
