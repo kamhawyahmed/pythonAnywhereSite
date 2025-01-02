@@ -6,6 +6,8 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from pathlib import Path #pythonanywhere compatibility - convert relative to abs path
+
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
@@ -25,8 +27,10 @@ def create_event(event_name, startDateTime, endDateTime, colorId):
     if creds and creds.expired and creds.refresh_token:
       creds.refresh(Request())
     else:
+      THIS_FOLDER = Path(__file__).parent.resolve()
+      absolute_file_path = THIS_FOLDER / "credentials.json"
       flow = InstalledAppFlow.from_client_secrets_file(
-          "credentials.json", SCOPES
+          absolute_file_path, SCOPES
       )
       creds = flow.run_local_server(port=0)
     # Save the credentials for the next run
