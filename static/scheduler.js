@@ -10,9 +10,10 @@ $('.month').click(function() {
     month = month.trim()
     var month_number = monthOfYear.indexOf(month) + 1
     var month_number_as_string = month_number.toString()
-    date = month_number_as_string + "/01/2024"
+    var today = new Date();
+    var current_year = today.getFullYear();
+    date = month_number_as_string + "/01/" + current_year
     console.log(month, month_number)
-
     $('#datepickerFACT').datepicker('setDate', date);
     $('#datepickerLAP').datepicker('setDate', date);
 });
