@@ -45,7 +45,7 @@ def create_event(event_name, startDateTime, endDateTime, colorId):
     if EVENT["colorId"] == "invalid":
         EVENT.pop('colorId', None)
 
-    event_object = service.events().insert(calendarId="6831b154a13a31321f8d3b3e6cdde303f96a8003b79e6366a69664bb2a4bd26f@group.calendar.google.com", sendNotifications=False, body=EVENT).execute()
+    event_object = service.events().insert(calendarId="09b244fd57d4f16dc6d12a67a730c003742343e55ebe4ccff407b6692ea5aa10@group.calendar.google.com", sendNotifications=False, body=EVENT).execute()
     return event_object
 
   except HttpError as error:
@@ -54,4 +54,4 @@ def create_event(event_name, startDateTime, endDateTime, colorId):
 
 
 if __name__ == "__main__":
-  create_event(event_name="Sleep (Ahmed's Watch)", startDateTime="2025-01-02T00:00:04", endDateTime="2025-01-02T00:57:34", colorId=10) #not implemented
+  create_event(event_name="Sleep (Ahmed's Watch)", startDateTime="2025-01-02T00:00:04", endDateTime="2025-01-02T00:57:34", colorId=10)

@@ -86,10 +86,6 @@ migrate.init_app(app, db)
 # login_manager.init_app(app)
 
 
-
-
-
-
 class Book(db.Model):
     __bind_key__ = "library"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -206,16 +202,14 @@ def scheduler():
             for string in date_strings:
                 date = string.split("T")[0]
                 start_date_time = date + "T" + "18:00:00"
-                day_plus_one = str(int(date[-1]) + 1)
-                end_date_time = date[:-1] + day_plus_one + "T" + "08:00:00"
+                day_plus_one = f"{int(date[-2:]) + 1:>02}"
+                end_date_time = date[:-2] + day_plus_one + "T" + "08:00:00"
+                print(start_date_time, end_date_time)
                 #create event from 6pm to 8am with colorid 10 and specific date
                 googleCalendar.create_event(event_name=event_name, 
                                            startDateTime=start_date_time, 
                                            endDateTime=end_date_time, 
                                            colorId=10)
-                print("event added")
-
-                    
     return render_template("scheduler.html", output=output)
 
 

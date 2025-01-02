@@ -219,5 +219,4 @@ $('#gCalendarSubmit').click(function() {
     }) 
     console.log(LAPDatesStrings)
     $.post("/scheduler", {"FACTDatesStrings": FACTDatesStrings, "LAPDatesStrings": LAPDatesStrings})
-
 })
