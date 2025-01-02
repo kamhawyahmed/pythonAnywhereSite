@@ -197,3 +197,27 @@ $('#datepickerLAP').on('changeDate', function(){
     // apply new string
     $('textarea')[0].value = output
 });
+
+$('#gCalendarSubmit').click(function() {
+    console.log("gCalendarSubmit")
+    var FACTDates = $('#datepickerFACT').datepicker('getDates')
+    var LAPDates = $('#datepickerLAP').datepicker('getDates')
+    var FACTDatesStrings = []
+    FACTDates.forEach(element => {
+        var isodate = element.toISOString()
+        FACTDatesStrings.push(isodate)
+        console.log(isodate)
+        console.log(typeof(isodate))
+    }) 
+    console.log(FACTDatesStrings)
+    var LAPDatesStrings = []
+    LAPDates.forEach(element => {
+        var isodate = element.toISOString()
+        LAPDatesStrings.push(isodate)
+        console.log(isodate)
+        console.log(typeof(isodate))
+    }) 
+    console.log(LAPDatesStrings)
+    $.post("/scheduler", {"FACTDatesStrings": FACTDatesStrings, "LAPDatesStrings": LAPDatesStrings})
+
+})

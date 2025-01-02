@@ -3,3 +3,5 @@
 __pycache__
 .env
 incoming_messages.log
+credentials.json
+token.json

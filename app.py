@@ -8,8 +8,8 @@
 
 # TODO list
 # TODO make frontend JS to update ayat while on surah page visually and store changes and only access backend once when leave surah page
-# TODO style acct mngmt w/ tailwind css + flowbite
-# add delete user button
+# style acct mngmt w/ tailwind css + flowbite - DONE
+# add delete user button - DONE
 # separate out surah name surah page like surah list - not happening with input buttons
 #  add deeper shade button click colour - DONE
 #  change home page for surah mem user ayah - DONE
@@ -41,6 +41,7 @@ from livereload import Server
 import availability_scheduler
 import Twilio
 import time
+import googleCalendar
 
 
 
@@ -59,7 +60,7 @@ naming_convention = {
 
 app = Flask(__name__)
 
-# Set the secret key to some random bytes. Keep this really secret!
+# Set the secret key to some random bytes. Keep this really secret! - flask login not yet setup
 app.secret_key = "328d8ac49c90850bb64a7d6bf762354fdbcb5f72ef37d198dfccf724e2ae116f"
 login_manager = LoginManager()
 
@@ -192,10 +193,29 @@ def sleep_sync():
 def scheduler():
     output = ""
     if request.method == 'POST':
+        #for each key received
         for key in request.form.keys():
-            month_num = key.split("_")[1] #number of month
-        output = availability_scheduler.availability_calculator(availability_scheduler.month_parser(month_num))
+                #if key FACT name events FACT Shift , if LAP name LAP Shift
+            if key == "FACTDatesStrings[]":
+                event_name = "FACT Shift"
+            elif key == "LAPShiftStrings[]":
+                event_name = "LAP Shift"
+            date_strings = request.form.getlist(key)
+            print(key, request.form.getlist(key))
+            # for each string in getlist
+            for string in date_strings:
+                date = string.split("T")[0]
+                start_date_time = date + "T" + "18:00:00"
+                day_plus_one = str(int(date[-1]) + 1)
+                end_date_time = date[:-1] + day_plus_one + "T" + "08:00:00"
+                #create event from 6pm to 8am with colorid 10 and specific date
+                googleCalendar.create_event(event_name=event_name, 
+                                           startDateTime=start_date_time, 
+                                           endDateTime=end_date_time, 
+                                           colorId=10)
+                print("event added")
 
+                    
     return render_template("scheduler.html", output=output)
 
 
