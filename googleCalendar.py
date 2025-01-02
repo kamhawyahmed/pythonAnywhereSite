@@ -29,6 +29,7 @@ def create_event(event_name, startDateTime, endDateTime, colorId):
     else:
       THIS_FOLDER = Path(__file__).parent.resolve()
       absolute_file_path = THIS_FOLDER / "credentials.json"
+      print(absolute_file_path)
       flow = InstalledAppFlow.from_client_secrets_file(
           absolute_file_path, SCOPES
       )
@@ -58,4 +59,6 @@ def create_event(event_name, startDateTime, endDateTime, colorId):
 
 
 if __name__ == "__main__":
-  create_event(event_name="Sleep (Ahmed's Watch)", startDateTime="2025-01-02T00:00:04", endDateTime="2025-01-02T00:57:34", colorId=10)
+  THIS_FOLDER = Path(__file__).parent.resolve()
+  absolute_file_path = THIS_FOLDER / "credentials.json"
+  # create_event(event_name="Sleep (Ahmed's Watch)", startDateTime="2025-01-02T00:00:04", endDateTime="2025-01-02T00:57:34", colorId=10)
