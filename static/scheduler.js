@@ -7,10 +7,11 @@ monthOfYear =  ["January", "February", "March", "April", "May", "June", "July", 
 $('.month').click(function() {
     var date = "";
     var month = $(this).text()
+    month = month.trim()
     var month_number = monthOfYear.indexOf(month) + 1
     var month_number_as_string = month_number.toString()
     date = month_number_as_string + "/01/2024"
-
+    console.log(month, month_number)
 
     $('#datepickerFACT').datepicker('setDate', date);
     $('#datepickerLAP').datepicker('setDate', date);
@@ -137,16 +138,62 @@ function addDatesFromDatepickerAsPara(datepicker, target_div_id) {
     addStringAsNewPara(datesString, target_div_id)
 }
 
+function createDatePickerString(datepicker) {
+    // get dates
+    var datesObject = datepicker.datepicker('getDates')
+    // sort dates by dayOfMonth
+    datesObject.sort(function(a,b) {
+        return new Date(a.getDate()) - new Date (b.getDate())
+    });
+    // convert date to readable for every date in dates
+    const dateStrings =  createListOfStrings(datesObject)
+
+    var datesString = ""
+    dateStrings.forEach(string => {
+        datesString = datesString + "\n" + string
+    });
+    // datesString = datesString.slice(0,-3)
+    return datesString
+}
+
 // add string as para
 $('#datepickerFACT').on('changeDate', function(){
     //update highlighted
     highlightBothDatePickers('#datepickerFACT', '#datepickerLAP')
-    addDatesFromDatepickerAsPara($(this), '#div')
+    // addDatesFromDatepickerAsPara($(this), '#div')
+
+    // create new string
+    var default_email_form_text = "Hi,\n\nPlease find schedule attached below.\n\nFACT Shifts:\n\nLAP Shifts:\n\nThanks,\nAhmed"
+    var array = default_email_form_text.split(":")
+    console.log(createDatePickerString($(this)))
+    array[0] = array[0].concat(": ",createDatePickerString($('#datepickerFACT')))
+    array[1] = array[1].concat(": ",createDatePickerString($('#datepickerLAP')))
+    console.log(array)
+    var output = ""
+    array.forEach(element =>  {
+        output = output + element
+    });
+    // apply new string
+    $('textarea')[0].value = output
 
 });
 
 $('#datepickerLAP').on('changeDate', function(){
     //update highlighted
     highlightBothDatePickers('#datepickerFACT', '#datepickerLAP')
-    addDatesFromDatepickerAsPara($(this), '#div2')
+    // addDatesFromDatepickerAsPara($(this), '#div2')
+
+    // create new string
+    var default_email_form_text = "Hi,\n\nPlease find schedule attached below.\n\nFACT Shifts:\n\nLAP Shifts:\n\nThanks,\nAhmed"
+    var array = default_email_form_text.split(":")
+    console.log(createDatePickerString($(this)))
+    array[0] = array[0].concat(": ",createDatePickerString($('#datepickerFACT')))
+    array[1] = array[1].concat(": ",createDatePickerString($('#datepickerLAP')))
+    console.log(array)
+    var output = ""
+    array.forEach(element =>  {
+        output = output + element
+    });
+    // apply new string
+    $('textarea')[0].value = output
 });

@@ -40,6 +40,7 @@ from zoneinfo import ZoneInfo
 from livereload import Server
 import availability_scheduler
 import Twilio
+import time
 
 
 
@@ -162,6 +163,7 @@ with app.app_context(): #open the app on script run
     # Twilio.fetch_and_log_messages()
     # Twilio.send_message("yoo", target_phone_number="+19172008360")
 
+
 @app.route('/vibecheck', methods=['GET', 'POST'])
 def vibecheck():
     incoming_messages = Twilio.fetch_messages_to_list()
@@ -180,7 +182,7 @@ def hello_world():
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     message = "Hello world"
-    return render_template("intro.html", msg = message)
+    return render_template("tailwind.html", msg = message)
 @app.route('/sleep', methods=['GET', 'POST'])
 def sleep_sync():
     message = "Hello world"
@@ -367,9 +369,14 @@ def update_all_surah_memorized_manually(app=app):
 
 
 
+
+
+
 if __name__ == "__main__":
     # update_all_surah_memorized_manually()
     
     # server = Server(app.wsgi_app) #FOR STATIC EDITING
     # server.serve()
     app.run(debug=True) #FOR PY EDITING
+
+    
